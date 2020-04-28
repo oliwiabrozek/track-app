@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "363873844951",
+    "firebase_url": "https://fir-auth-218c5.firebaseio.com",
+    "project_id": "fir-auth-218c5",
+    "storage_bucket": "fir-auth-218c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363873844951:android:e863c3d32526909bd23a92",
+        "android_client_info": {
+          "package_name": "org.polsl.trackapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363873844951-73m9kv623qcr90gaeo5qjsfo8sqva4ea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.polsl.trackapp",
+            "certificate_hash": "42b61ed04e9c492542b9260e69d7c1662ba529a6"
+          }
+        },
+        {
+          "client_id": "363873844951-0prpb7m15av3gqtmj4in4764ojjstbdo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQNlc4ycZG_iGv5RWDkknyUQ0PnOMXWUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363873844951-0prpb7m15av3gqtmj4in4764ojjstbdo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
