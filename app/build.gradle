@@ -41,5 +41,8 @@ dependencies {
     //play service auth
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     //database
-    implementation 'com.google.firebase:firebase-database-ktx:19.3.0'
+    //implementation 'com.google.firebase:firebase-database-ktx:19.3.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
 }

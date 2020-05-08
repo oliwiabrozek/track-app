@@ -2,4 +2,9 @@
     <string name="app_name">Track App</string>
     <string name="congrats_text">Congrats</string>
     <string name="sign_out_button">Sign Out</string>
+    <string name="search_menu_item">Search</string>
+    <string name="add_menu_item">Add</string>
+    <string name="tab_movies_label">Movies</string>
+    <string name="tab_books_label">Books</string>
+    <string name="tab_games_label">Games</string>
 </resources>
