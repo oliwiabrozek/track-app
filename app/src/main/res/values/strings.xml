@@ -8,4 +8,7 @@
     <string name="tab_books_label">Books</string>
     <string name="tab_games_label">Games</string>
     <string name="sign_out_menu_item">Sign Out</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
