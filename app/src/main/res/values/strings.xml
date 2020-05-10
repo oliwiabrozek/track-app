@@ -7,4 +7,5 @@
     <string name="tab_movies_label">Movies</string>
     <string name="tab_books_label">Books</string>
     <string name="tab_games_label">Games</string>
+    <string name="sign_out_menu_item">Sign Out</string>
 </resources>
