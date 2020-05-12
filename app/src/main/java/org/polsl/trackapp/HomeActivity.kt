@@ -9,13 +9,20 @@ import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_home)
+//
+//        //setupUI()
+//    }
+override fun getLayoutId(): Int {
+    return R.layout.activity_home
+}
 
-        //setupUI()
+    override fun getBottomNavigationMenuItemId(): Int {
+        return R.id.action_search
     }
 
 //    private fun setupUI() {

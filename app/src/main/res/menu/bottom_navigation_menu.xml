@@ -2,7 +2,10 @@
     <item android:id="@+id/action_search"
         android:title="@string/search_menu_item"
         android:icon="@drawable/ic_search_black_24dp" />
-    <item android:id="@+id/action_settings"
+    <item android:id="@+id/action_bookmark"
+        android:title="@string/search_menu_item"
+        android:icon="@drawable/ic_bookmark_black_24dp" />
+    <item android:id="@+id/action_add"
         android:title="@string/add_menu_item"
         android:icon="@drawable/ic_add_black_24dp" />
 </menu>
