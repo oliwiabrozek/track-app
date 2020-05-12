@@ -57,4 +57,10 @@ override fun getLayoutId(): Int {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+//    override fun dupa(){
+//        val fragmentAdapter = TabsPagerAdapter(supportFragmentManager)
+//        viewpager.adapter = fragmentAdapter
+//        sliding_tabs.setupWithViewPager(viewpager)
+//    }
 }

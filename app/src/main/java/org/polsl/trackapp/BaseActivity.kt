@@ -5,7 +5,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+
+import kotlinx.android.synthetic.main.activity_home.sliding_tabs
+import kotlinx.android.synthetic.main.activity_home.viewpager
 
 
 abstract class BaseActivity : AppCompatActivity(),
@@ -16,6 +22,19 @@ abstract class BaseActivity : AppCompatActivity(),
         setContentView(getLayoutId())
         navigationView = findViewById<View>(R.id.navigation) as BottomNavigationView
         navigationView!!.setOnNavigationItemSelectedListener(this)
+
+//        val fragmentAdapter = TabsPagerAdapter()
+//        viewpager.adapter = fragmentAdapter
+//        sliding_tabs.setupWithViewPager(viewpager)
+        val demoAdapter = TabsPagerAdapter(this)
+        viewpager.adapter = demoAdapter
+
+        TabLayoutMediator(sliding_tabs, viewpager) { tab, position ->
+            tab.text = "dupa"
+        }
+
+
+
     }
 
     //abstract fun getContentViewId(): Int
@@ -60,5 +79,6 @@ abstract class BaseActivity : AppCompatActivity(),
 
     abstract fun getLayoutId(): Int // this is to return which layout(activity) needs to display when clicked on tabs.
     abstract fun getBottomNavigationMenuItemId(): Int //Which menu item selected and change the state of that menu item
+    //abstract fun dupa()
 
 }

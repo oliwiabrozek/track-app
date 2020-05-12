@@ -2,6 +2,7 @@ package org.polsl.trackapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_form.*
 
 class FormActivity : BaseActivity() {
 
@@ -17,4 +18,10 @@ class FormActivity : BaseActivity() {
     override fun getBottomNavigationMenuItemId(): Int {
         return R.id.action_add
     }
+
+//    override fun dupa(){
+//        val fragmentAdapter = TabsPagerAdapter(supportFragmentManager)
+//        viewpager.adapter = fragmentAdapter
+//        sliding_tabs.setupWithViewPager(viewpager)
+//    }
 }

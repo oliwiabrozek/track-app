@@ -1,5 +1,7 @@
 package org.polsl.trackapp
 
+import kotlinx.android.synthetic.main.activity_bookmark.*
+
 class BookmarkActivity : BaseActivity() {
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,4 +16,10 @@ class BookmarkActivity : BaseActivity() {
     override fun getBottomNavigationMenuItemId(): Int {
         return R.id.action_bookmark
     }
+
+//    override fun dupa(){
+//        val fragmentAdapter = TabsPagerAdapter(supportFragmentManager)
+//        viewpager.adapter = fragmentAdapter
+//        sliding_tabs.setupWithViewPager(viewpager)
+//    }
 }
