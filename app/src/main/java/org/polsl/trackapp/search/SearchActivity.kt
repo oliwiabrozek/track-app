@@ -1,15 +1,16 @@
-package org.polsl.trackapp
+package org.polsl.trackapp.search
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
+import org.polsl.trackapp.BaseActivity
+import org.polsl.trackapp.R
+import org.polsl.trackapp.SignInActivity
 
-class HomeActivity : BaseActivity() {
+class SearchActivity : BaseActivity() {
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -32,12 +33,16 @@ override fun getLayoutId(): Int {
 //    }
 
     private fun signOut() {
-        startActivity(SignInActivity.getLaunchIntent(this))
+        startActivity(
+            SignInActivity.getLaunchIntent(
+                this
+            )
+        )
         FirebaseAuth.getInstance().signOut();
     }
 
     companion object {
-        fun getLaunchIntent(from: Context) = Intent(from, HomeActivity::class.java).apply {
+        fun getLaunchIntent(from: Context) = Intent(from, SearchActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
     }
@@ -58,9 +63,7 @@ override fun getLayoutId(): Int {
         }
     }
 
-//    override fun dupa(){
-//        val fragmentAdapter = TabsPagerAdapter(supportFragmentManager)
-//        viewpager.adapter = fragmentAdapter
-//        sliding_tabs.setupWithViewPager(viewpager)
-//    }
+     override fun setPagerAdapter(){
+         viewpager.adapter = TabsPagerAdapter(this)
+    }
 }

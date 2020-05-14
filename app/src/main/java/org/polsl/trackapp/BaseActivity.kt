@@ -5,39 +5,24 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import org.polsl.trackapp.search.BookmarkActivity
 
-import kotlinx.android.synthetic.main.activity_home.sliding_tabs
-import kotlinx.android.synthetic.main.activity_home.viewpager
-
+import org.polsl.trackapp.form.FormActivity
+import org.polsl.trackapp.search.SearchActivity
 
 abstract class BaseActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
     protected var navigationView: BottomNavigationView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
         navigationView = findViewById<View>(R.id.navigation) as BottomNavigationView
         navigationView!!.setOnNavigationItemSelectedListener(this)
 
-//        val fragmentAdapter = TabsPagerAdapter()
-//        viewpager.adapter = fragmentAdapter
-//        sliding_tabs.setupWithViewPager(viewpager)
-        val demoAdapter = TabsPagerAdapter(this)
-        viewpager.adapter = demoAdapter
-
-        TabLayoutMediator(sliding_tabs, viewpager) { tab, position ->
-            tab.text = "dupa"
-        }
-
-
-
+        setPagerAdapter()
     }
-
-    //abstract fun getContentViewId(): Int
 
     override fun onStart() {
         super.onStart()
@@ -54,7 +39,7 @@ abstract class BaseActivity : AppCompatActivity(),
         navigationView!!.postDelayed({
             val itemId: Int = item.getItemId()
             if (itemId == R.id.action_search) {
-                startActivity(Intent(this, HomeActivity::class.java))
+                startActivity(Intent(this, SearchActivity::class.java))
             } else if (itemId == R.id.action_bookmark) {
                 startActivity(Intent(this, BookmarkActivity::class.java))
             } else if (itemId == R.id.action_add) {
@@ -70,8 +55,6 @@ abstract class BaseActivity : AppCompatActivity(),
         selectBottomNavigationBarItem(actionId)
     }
 
-    //abstract fun getNavigationMenuItemId(): Int
-
     fun selectBottomNavigationBarItem(itemId: Int) {
         val item: MenuItem = navigationView!!.menu.findItem(itemId)
         item.setChecked(true)
@@ -79,6 +62,6 @@ abstract class BaseActivity : AppCompatActivity(),
 
     abstract fun getLayoutId(): Int // this is to return which layout(activity) needs to display when clicked on tabs.
     abstract fun getBottomNavigationMenuItemId(): Int //Which menu item selected and change the state of that menu item
-    //abstract fun dupa()
+    abstract fun setPagerAdapter()
 
 }

@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_sign_in.*
+import org.polsl.trackapp.search.SearchActivity
 
 class SignInActivity : AppCompatActivity() {
     val RC_SIGN_IN: Int = 1
@@ -73,7 +74,7 @@ class SignInActivity : AppCompatActivity() {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
 
-                startActivity(HomeActivity.getLaunchIntent(this))
+                startActivity(SearchActivity.getLaunchIntent(this))
             } else {
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()
             }
@@ -84,7 +85,7 @@ class SignInActivity : AppCompatActivity() {
         super.onStart()
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            startActivity(HomeActivity.getLaunchIntent(this))
+            startActivity(SearchActivity.getLaunchIntent(this))
             finish()
         }
     }

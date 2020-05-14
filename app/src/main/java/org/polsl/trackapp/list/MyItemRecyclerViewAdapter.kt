@@ -1,4 +1,4 @@
-package org.polsl.trackapp
+package org.polsl.trackapp.list
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 
-import org.polsl.trackapp.ItemFragment.OnListFragmentInteractionListener
+import org.polsl.trackapp.list.ItemFragment.OnListFragmentInteractionListener
 import org.polsl.trackapp.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
+import org.polsl.trackapp.R
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the

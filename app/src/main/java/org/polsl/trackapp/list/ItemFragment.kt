@@ -1,4 +1,4 @@
-package org.polsl.trackapp
+package org.polsl.trackapp.list
 
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.polsl.trackapp.R
 
 import org.polsl.trackapp.dummy.DummyContent
 import org.polsl.trackapp.dummy.DummyContent.DummyItem
@@ -46,7 +47,10 @@ class ItemFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                adapter = MyItemRecyclerViewAdapter(
+                    DummyContent.ITEMS,
+                    listener
+                )
             }
         }
         return view
