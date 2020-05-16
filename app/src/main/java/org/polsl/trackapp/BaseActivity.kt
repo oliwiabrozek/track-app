@@ -9,7 +9,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_form.*
@@ -24,6 +27,8 @@ abstract class BaseActivity : AppCompatActivity(),
     protected var navigationView: BottomNavigationView? = null
 
     private lateinit var database: DatabaseReference
+
+    private var books: MutableList<Item> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,10 +112,9 @@ abstract class BaseActivity : AppCompatActivity(),
     fun writeToDatabase(view: View) {
         val type = spinner2.selectedItem.toString()
         var state = ""
-        if(switch_bookmark.isChecked == true){
+        if (switch_bookmark.isChecked == true) {
             state = "BOOKMARKED"
-        }
-        else{
+        } else {
             state = "UNBOOKMARKED"
         }
         val item: Item = createItem()
@@ -129,11 +133,33 @@ abstract class BaseActivity : AppCompatActivity(),
         val author: String = author_edit_text.text.toString()
         val title: String = title_edit_text.text.toString()
         val yearString: String = year_edit_text.text.toString()
-        val year: Int? = if(yearString.isEmpty()){
+        val year: Int? = if (yearString.isEmpty()) {
             null;
-        } else{
+        } else {
             Integer.parseInt(yearString)
         }
         return Item(author, title, year)
     }
+
+    private fun readBooks() {
+        val booksListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                books.clear()
+                //dataSnapshot.children.mapNotNullTo(books) { it.getValue<Item>(Item::class.java) }
+                for (data in dataSnapshot.children){
+                    val book = data.getValue(Item::class.java)
+                    books.add(book!!)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("loadPost:onCancelled ${databaseError.toException()}")
+            }
+        }
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        database.child(userId).child("BOOKMARKED").child("Book")
+            .addValueEventListener(booksListener)
+
+    }
+
 }
