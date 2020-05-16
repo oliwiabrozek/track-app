@@ -13,6 +13,9 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import org.polsl.trackapp.search.SearchActivity
 
@@ -23,7 +26,6 @@ class SignInActivity : AppCompatActivity() {
 
     private lateinit var firebaseAuth: FirebaseAuth
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -32,7 +34,6 @@ class SignInActivity : AppCompatActivity() {
         setupUI()
 
         firebaseAuth = FirebaseAuth.getInstance()
-
     }
 
     private fun configureGoogleSignIn() {
@@ -73,7 +74,6 @@ class SignInActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-
                 startActivity(SearchActivity.getLaunchIntent(this))
             } else {
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()

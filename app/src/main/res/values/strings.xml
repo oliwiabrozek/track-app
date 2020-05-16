@@ -14,6 +14,16 @@
     <string name="tab_books_label">Books</string>
     <string name="tab_games_label">Games</string>
 
+    // hints
+    <string name="title_hint">Enter a title</string>
+    <string name="author_hint">Enter an author</string>
+    <string name="year_hint">Enter a year</string>
+
+    <string name="switch_text">Add to Bookmarks</string>
+    <string name="button_save_text">Save</string>
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

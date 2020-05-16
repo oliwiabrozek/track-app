@@ -1,51 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".form.FormActivity">-->
+
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".form.FormActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"
-            android:entries="@array/items_array"/>
+            android:layout_weight="1"
+            android:entries="@array/items_array"
+            android:spinnerMode="dropdown" />
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
+    <EditText
+        android:id="@+id/author_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:ems="10"
+        android:hint="@string/author_hint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
+    <EditText
+        android:id="@+id/title_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:ems="10"
+        android:hint="@string/title_hint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/editText3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:maxLength="4"
-            android:maxLines="1" />
+    <EditText
+        android:id="@+id/year_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:ems="10"
+        android:hint="@string/year_hint"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        android:maxLength="4"
+        android:maxLines="1" />
 
         <View
             android:id="@+id/divider"
@@ -54,24 +62,29 @@
             android:background="?android:attr/listDivider" />
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/switch_bookmark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Switch" />
+            android:layout_weight="1"
+            android:text="@string/switch_text" />
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
-    </LinearLayout>
+            android:gravity="center"
+            android:text="@string/button_save_text"
+            android:onClick="writeToDatabase"
+            android:textAlignment="center" />
 
     <include
         layout="@layout/fragment_bottom_navigation"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

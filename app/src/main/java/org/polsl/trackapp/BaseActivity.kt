@@ -2,18 +2,28 @@ package org.polsl.trackapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.polsl.trackapp.search.BookmarkActivity
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_form.*
 import org.polsl.trackapp.form.FormActivity
+import org.polsl.trackapp.model.Item
+import org.polsl.trackapp.search.BookmarkActivity
 import org.polsl.trackapp.search.SearchActivity
+
 
 abstract class BaseActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
     protected var navigationView: BottomNavigationView? = null
+
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +32,36 @@ abstract class BaseActivity : AppCompatActivity(),
         navigationView!!.setOnNavigationItemSelectedListener(this)
 
         setPagerAdapter()
+
+        database = Firebase.database.reference
+
+        //writeNewBook("1", "Pod kopułą", "Stephen King")
+        //Toast.makeText(this, FirebaseAuth.getInstance().currentUser?.email, Toast.LENGTH_SHORT).show();
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.overflow_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean { // Handle item selection
+        return when (item.getItemId()) {
+            R.id.sign_out_menu_item -> {
+                signOut()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun signOut() {
+        startActivity(
+            SignInActivity.getLaunchIntent(
+                this
+            )
+        )
+        FirebaseAuth.getInstance().signOut();
     }
 
     override fun onStart() {
@@ -64,4 +104,36 @@ abstract class BaseActivity : AppCompatActivity(),
     abstract fun getBottomNavigationMenuItemId(): Int //Which menu item selected and change the state of that menu item
     abstract fun setPagerAdapter()
 
+    fun writeToDatabase(view: View) {
+        val type = spinner2.selectedItem.toString()
+        var state = ""
+        if(switch_bookmark.isChecked == true){
+            state = "BOOKMARKED"
+        }
+        else{
+            state = "UNBOOKMARKED"
+        }
+        val item: Item = createItem()
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        database.child(userId).child(state).child(type).push().setValue(item)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Write was successful", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Write failed successful", Toast.LENGTH_SHORT).show()
+            }
+
+    }
+
+    private fun createItem(): Item {
+        val author: String = author_edit_text.text.toString()
+        val title: String = title_edit_text.text.toString()
+        val yearString: String = year_edit_text.text.toString()
+        val year: Int? = if(yearString.isEmpty()){
+            null;
+        } else{
+            Integer.parseInt(yearString)
+        }
+        return Item(author, title, year)
+    }
 }
