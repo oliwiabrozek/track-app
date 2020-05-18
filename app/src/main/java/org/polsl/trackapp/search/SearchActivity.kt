@@ -2,28 +2,23 @@ package org.polsl.trackapp.search
 
 import android.content.Context
 import android.content.Intent
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_home.*
 import org.polsl.trackapp.BaseActivity
 import org.polsl.trackapp.R
-import org.polsl.trackapp.SignInActivity
 
 
 class SearchActivity : BaseActivity() {
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
+    //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_home)
 //
 //        //setupUI()
 //    }
-override fun getLayoutId(): Int {
-    return R.layout.activity_home
-}
+    override fun getLayoutId(): Int {
+        return R.layout.activity_home
+    }
 
     override fun getBottomNavigationMenuItemId(): Int {
         return R.id.action_search
@@ -41,7 +36,20 @@ override fun getLayoutId(): Int {
         }
     }
 
-     override fun setPagerAdapter(){
-         viewpager.adapter = TabsPagerAdapter(this)
-     }
+    //     override fun setPagerAdapter(){
+//         viewpager.adapter = TabsPagerAdapter(this)
+//     }
+    override fun setPagerAdapter() {
+        viewpager.adapter = TabsPagerAdapter(this)
+        viewpager.isUserInputEnabled = false
+        sliding_tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewpager.setCurrentItem(tab!!.position, false)
+            }
+        })
+    }
 }
