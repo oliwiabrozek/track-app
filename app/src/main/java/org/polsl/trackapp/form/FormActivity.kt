@@ -1,7 +1,5 @@
 package org.polsl.trackapp.form
 
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import org.polsl.trackapp.BaseActivity
 import org.polsl.trackapp.R
 
@@ -16,6 +14,5 @@ class FormActivity : BaseActivity() {
     }
 
     override fun setPagerAdapter(){
-
     }
 }

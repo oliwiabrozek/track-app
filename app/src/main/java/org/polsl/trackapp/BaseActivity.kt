@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,6 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_form.*
+import kotlinx.android.synthetic.main.fragment_search.*
 import org.polsl.trackapp.form.FormActivity
 import org.polsl.trackapp.model.Item
 import org.polsl.trackapp.search.BookmarkActivity
@@ -28,7 +31,11 @@ abstract class BaseActivity : AppCompatActivity(),
 
     private lateinit var database: DatabaseReference
 
-    private var books: MutableList<Item> = mutableListOf()
+    private var mode: String = ""
+
+    private var item: Item? = null
+    private var type: String? = null
+    private var state: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +47,18 @@ abstract class BaseActivity : AppCompatActivity(),
 
         database = Firebase.database.reference
 
-        //writeNewBook("1", "Pod kopułą", "Stephen King")
-        //Toast.makeText(this, FirebaseAuth.getInstance().currentUser?.email, Toast.LENGTH_SHORT).show();
+        item = intent.getSerializableExtra("ITEM") as? Item
+        state = intent.getStringExtra("itemState")
+        type = intent.getStringExtra("itemType")
+
+
+
+        if (item != null) {
+            button_delete.isEnabled = true
+            fillFields()
+        }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -100,9 +117,9 @@ abstract class BaseActivity : AppCompatActivity(),
         selectBottomNavigationBarItem(actionId)
     }
 
-    fun selectBottomNavigationBarItem(itemId: Int) {
+    private fun selectBottomNavigationBarItem(itemId: Int) {
         val item: MenuItem = navigationView!!.menu.findItem(itemId)
-        item.setChecked(true)
+        item.isChecked = true
     }
 
     abstract fun getLayoutId(): Int // this is to return which layout(activity) needs to display when clicked on tabs.
@@ -112,7 +129,7 @@ abstract class BaseActivity : AppCompatActivity(),
     fun writeToDatabase(view: View) {
         val type = spinner2.selectedItem.toString()
         var state = ""
-        if (switch_bookmark.isChecked == true) {
+        if (switch_bookmark.isChecked) {
             state = "BOOKMARKED"
         } else {
             state = "UNBOOKMARKED"
@@ -122,9 +139,10 @@ abstract class BaseActivity : AppCompatActivity(),
         database.child(userId).child(state).child(type).push().setValue(item)
             .addOnSuccessListener {
                 Toast.makeText(this, "Write was successful", Toast.LENGTH_SHORT).show()
+                clearFields()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Write failed successful", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Write failed", Toast.LENGTH_SHORT).show()
             }
 
     }
@@ -140,4 +158,41 @@ abstract class BaseActivity : AppCompatActivity(),
         }
         return Item(author, title, year)
     }
+
+    fun deleteItem(view: View) {
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        if (item!!.firebaseKey != null && state != null && type != null) {
+            database.child(userId).child(state!!).child(type!!).child(item!!.firebaseKey!!)
+                .removeValue()
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Delete was successful", Toast.LENGTH_SHORT).show()
+                    clearFields()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Delete failed", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun clearFields() {
+        author_edit_text.text.clear()
+        title_edit_text.text.clear()
+        year_edit_text.text.clear()
+    }
+
+    private fun fillFields() {
+        author_edit_text.setText(item?.author)
+        title_edit_text.setText(item?.title)
+        if (item?.year != null) {
+            year_edit_text.setText(item!!.year!!.toString())
+        }
+        switch_bookmark.isChecked = state == "BOOKMARKED"
+        when (type) {
+            "Movie" -> spinner2.setSelection(0)
+            "Book" -> spinner2.setSelection(1)
+            "Game" -> spinner2.setSelection(2)
+        }
+
+    }
+
 }

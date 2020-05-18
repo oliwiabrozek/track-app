@@ -20,10 +20,16 @@ class ItemViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mYearView = itemView.findViewById(R.id.item_year)
     }
 
-    fun bind(item: Item) {
+    fun bind(item: Item, clickListener: OnItemClickListener) {
         mTitleView?.text = item.title
         mAuthorView?.text = item.author
         mYearView?.text = item.year.toString()
+
+        itemView.setOnClickListener {
+            clickListener.onItemClicked(item)
+            println("LISTENER")
+            println()
+        }
     }
 
 }

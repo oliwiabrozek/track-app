@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.activity_home.*
 import org.polsl.trackapp.BaseActivity
 import org.polsl.trackapp.R
 
-
 class SearchActivity : BaseActivity() {
 
     //    override fun onCreate(savedInstanceState: Bundle?) {
