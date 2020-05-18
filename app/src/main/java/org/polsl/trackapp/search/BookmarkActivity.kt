@@ -14,7 +14,7 @@ class BookmarkActivity : BaseActivity() {
         return R.id.action_bookmark
     }
 
-    override fun setPagerAdapter(){
+    override fun setPagerAdapter() {
         viewpager.adapter = TabsPagerAdapter(this)
     }
 }

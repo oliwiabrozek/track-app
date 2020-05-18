@@ -6,9 +6,5 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class Item(
     var author: String = "",
     var title: String = "",
-    var year: Number?
+    var year: Int? = null
 )
-
-enum class ItemType {
-    MOVIE, BOOK, GAME
-}

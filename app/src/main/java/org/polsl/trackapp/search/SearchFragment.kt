@@ -5,12 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_item_list.*
 import org.polsl.trackapp.R
+import org.polsl.trackapp.list.ListAdapter
+import org.polsl.trackapp.model.Item
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM1 = "Tab"
 
 /**
  * A simple [Fragment] subclass.
@@ -19,23 +27,37 @@ private const val ARG_PARAM2 = "param2"
  */
 class SearchFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
+    private var param1: Int? = null
     private var param2: String? = null
+
+    private lateinit var database: DatabaseReference
+
+    private var items: MutableList<Item> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            param1 = it.getInt(ARG_PARAM1)
         }
+
+        database = Firebase.database.reference
+
+        read()
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        println("-------------------------INFLATE-------------------------------------")
         return inflater.inflate(R.layout.fragment_search, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     companion object {
@@ -53,8 +75,67 @@ class SearchFragment : Fragment() {
             SearchFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private fun read() {
+        val booksListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                items.clear()
+                //dataSnapshot.children.mapNotNullTo(books) { it.getValue<Item>(Item::class.java) }
+                for (data in dataSnapshot.children) {
+                    val book = data.getValue(Item::class.java)
+                    items.add(book!!)
+                    println(book.toString())
+                }
+
+                //RecyclerView node initialized here
+                if (activity != null) {
+                    list.apply {
+                        // set a LinearLayoutManager to handle Android
+                        // RecyclerView behavior
+                        layoutManager = LinearLayoutManager(activity)
+                        // set the custom adapter to the RecyclerView
+                        println("ADAPTER")
+                        println(adapter)
+                        adapter = ListAdapter(items)
+                    }
+                }
+
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("loadPost:onCancelled ${databaseError.toException()}")
+            }
+        }
+
+        val activitySimpleName: String? = activity?.javaClass?.simpleName
+        var pathString = ""
+        var pathString2 = ""
+
+        if (activitySimpleName !== null) {
+            if (activitySimpleName == "SearchActivity") {
+                pathString = "UNBOOKMARKED"
+            }
+            if (activitySimpleName == "BookmarkActivity") {
+                pathString = "BOOKMARKED"
+            }
+        }
+
+        if (param1 != null) {
+            when (param1) {
+                0 -> pathString2 = "Movie"
+                1 -> pathString2 = "Book"
+                2 -> pathString2 = "Game"
+            }
+        }
+
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        database.child(userId).child(pathString).child(pathString2)
+            .addValueEventListener(booksListener)
+
+        println(pathString2)
     }
 }

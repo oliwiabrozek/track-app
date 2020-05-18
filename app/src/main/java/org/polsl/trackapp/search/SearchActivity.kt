@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_home.*
@@ -34,8 +35,6 @@ override fun getLayoutId(): Int {
 //        }
 //    }
 
-
-
     companion object {
         fun getLaunchIntent(from: Context) = Intent(from, SearchActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -44,5 +43,5 @@ override fun getLayoutId(): Int {
 
      override fun setPagerAdapter(){
          viewpager.adapter = TabsPagerAdapter(this)
-    }
+     }
 }

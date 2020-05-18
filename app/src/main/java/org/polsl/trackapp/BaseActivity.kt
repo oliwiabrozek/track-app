@@ -140,26 +140,4 @@ abstract class BaseActivity : AppCompatActivity(),
         }
         return Item(author, title, year)
     }
-
-    private fun readBooks() {
-        val booksListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                books.clear()
-                //dataSnapshot.children.mapNotNullTo(books) { it.getValue<Item>(Item::class.java) }
-                for (data in dataSnapshot.children){
-                    val book = data.getValue(Item::class.java)
-                    books.add(book!!)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                println("loadPost:onCancelled ${databaseError.toException()}")
-            }
-        }
-        val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        database.child(userId).child("BOOKMARKED").child("Book")
-            .addValueEventListener(booksListener)
-
-    }
-
 }
