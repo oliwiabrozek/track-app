@@ -27,8 +27,6 @@ class ItemViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
 
         itemView.setOnClickListener {
             clickListener.onItemClicked(item)
-            println("LISTENER")
-            println()
         }
     }
 

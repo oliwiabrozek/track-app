@@ -9,12 +9,6 @@ import org.polsl.trackapp.R
 
 class SearchActivity : BaseActivity() {
 
-    //    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_home)
-//
-//        //setupUI()
-//    }
     override fun getLayoutId(): Int {
         return R.layout.activity_home
     }
@@ -23,21 +17,12 @@ class SearchActivity : BaseActivity() {
         return R.id.action_search
     }
 
-//    private fun setupUI() {
-//        sign_out_button.setOnClickListener {
-//            signOut()
-//        }
-//    }
-
     companion object {
         fun getLaunchIntent(from: Context) = Intent(from, SearchActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
     }
 
-    //     override fun setPagerAdapter(){
-//         viewpager.adapter = TabsPagerAdapter(this)
-//     }
     override fun setPagerAdapter() {
         viewpager.adapter = TabsPagerAdapter(this)
         viewpager.isUserInputEnabled = false

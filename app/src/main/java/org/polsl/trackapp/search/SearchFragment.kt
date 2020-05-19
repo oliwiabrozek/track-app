@@ -18,14 +18,14 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_search.*
+import org.polsl.trackapp.Node
 import org.polsl.trackapp.R
 import org.polsl.trackapp.form.FormActivity
 import org.polsl.trackapp.list.ListAdapter
 import org.polsl.trackapp.list.OnItemClickListener
 import org.polsl.trackapp.model.Item
-import java.text.Normalizer
 
-private const val ARG_PARAM1 = "Tab"
+private const val TAB_PARAM = "Tab"
 
 /**
  * A simple [Fragment] subclass.
@@ -33,25 +33,26 @@ private const val ARG_PARAM1 = "Tab"
  * create an instance of this fragment.
  */
 class SearchFragment : Fragment(), OnItemClickListener {
-    // TODO: Rename and change types of parameters
-    private var param1: Int? = null
-    private var param2: String? = null
+    private var tabParam: Int? = null
 
     private lateinit var database: DatabaseReference
 
     private var items: MutableList<Item> = mutableListOf()
+    private val userId = FirebaseAuth.getInstance().currentUser!!.uid
+    private val activitySimpleName: String? = activity?.javaClass?.simpleName
+
+    private var state: String = ""
+    private var type: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getInt(ARG_PARAM1)
+            tabParam = it.getInt(TAB_PARAM)
         }
 
         database = Firebase.database.reference
 
         read()
-
-
     }
 
 
@@ -60,7 +61,6 @@ class SearchFragment : Fragment(), OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        println("-------------------------INFLATE-------------------------------------")
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
@@ -74,16 +74,13 @@ class SearchFragment : Fragment(), OnItemClickListener {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment SearchFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             SearchFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    putString(TAB_PARAM, param1)
                 }
             }
     }
@@ -106,113 +103,70 @@ class SearchFragment : Fragment(), OnItemClickListener {
                         // RecyclerView behavior
                         layoutManager = LinearLayoutManager(activity)
                         // set the custom adapter to the RecyclerView
-                        println("ADAPTER")
-                        println(adapter)
                         adapter = ListAdapter(items, this@SearchFragment)
-
 
                         search_bar.imeOptions = EditorInfo.IME_ACTION_DONE
                         search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                             override fun onQueryTextChange(newText: String): Boolean {
-                                (adapter as ListAdapter).getFilter().filter(newText)
+                                (adapter as ListAdapter).filter.filter(newText)
                                 return false
                             }
 
                             override fun onQueryTextSubmit(query: String): Boolean {
                                 return false
                             }
-
                         })
-
-
-
-
+                    }
                 }
             }
 
-
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("loadPost:onCancelled ${databaseError.toException()}")
+            }
         }
 
-        override fun onCancelled(databaseError: DatabaseError) {
-            println("loadPost:onCancelled ${databaseError.toException()}")
+        val activitySimpleName: String? = activity?.javaClass?.simpleName
+
+        checkItemState(activitySimpleName)
+        checkItemType(tabParam)
+
+        database.child(userId).child(state).child(type).addValueEventListener(booksListener)
+    }
+
+    private fun checkItemType(param: Int?) {
+        if (param != null) {
+            when (param) {
+                0 -> type = Node.movie
+                1 -> type = Node.book
+                2 -> type = Node.game
+            }
         }
     }
 
-    val activitySimpleName: String? = activity?.javaClass?.simpleName
-    var pathString = ""
-    var pathString2 = ""
-
-    if (activitySimpleName !== null)
-    {
-        if (activitySimpleName == "SearchActivity") {
-            pathString = "UNBOOKMARKED"
-        }
-        if (activitySimpleName == "BookmarkActivity") {
-            pathString = "BOOKMARKED"
-        }
-    }
-
-    if (param1 != null)
-    {
-        when (param1) {
-            0 -> pathString2 = "Movie"
-            1 -> pathString2 = "Book"
-            2 -> pathString2 = "Game"
+    private fun checkItemState(param: String?) {
+        if (param !== null) {
+            when (param) {
+                "SearchActivity" -> {
+                    state = Node.unbookmarked
+                }
+                "BookmarkActivity" -> {
+                    state = Node.bookmarked
+                }
+            }
         }
     }
 
-    if (activitySimpleName !== null)
-    {
-        if (activitySimpleName == "SearchActivity") {
-            pathString = "UNBOOKMARKED"
-        }
-        if (activitySimpleName == "BookmarkActivity") {
-            pathString = "BOOKMARKED"
-        }
+    override fun onItemClicked(item: Item) {
+        val intent = Intent(context, FormActivity::class.java)
+
+        checkItemType(tabParam)
+        checkItemState(activitySimpleName)
+
+        intent.putExtra("ITEM_TYPE", type)
+        intent.putExtra("ITEM_STATE", state)
+        intent.putExtra("ITEM", item)
+
+        startActivity(intent)
     }
-
-    val userId = FirebaseAuth.getInstance().currentUser!!.uid
-    database.child(userId).child(pathString).child(pathString2)
-    .addValueEventListener(booksListener)
-
-    println(pathString2)
-}
-
-override fun onItemClicked(item: Item) {
-    val intent = Intent(context, FormActivity::class.java)
-
-    var type: String = ""
-    var state: String = ""
-
-    val activitySimpleName: String? = activity?.javaClass?.simpleName
-
-    if (param1 != null) {
-        when (param1) {
-            0 -> type = "Movie"
-            1 -> type = "Book"
-            2 -> type = "Game"
-        }
-    }
-
-    if (activitySimpleName !== null) {
-        if (activitySimpleName == "SearchActivity") {
-            state = "UNBOOKMARKED"
-        }
-        if (activitySimpleName == "BookmarkActivity") {
-            state = "BOOKMARKED"
-        }
-    }
-
-
-    intent.putExtra("itemType", type)
-    intent.putExtra("itemState", state)
-    intent.putExtra("ITEM", item)
-    startActivity(intent)
-//        val bundle = Bundle()
-//        bundle.putSerializable("ITEM", item)
-//
-//        startActivity(Intent(activity, FormActivity::class.java))
-
-}
 }

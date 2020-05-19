@@ -6,8 +6,9 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import org.polsl.trackapp.model.Item
+import java.util.*
 
-class ListAdapter(private val list: MutableList<Item>, val itemClickListener: OnItemClickListener)
+class ListAdapter(private val list: MutableList<Item>, private val itemClickListener: OnItemClickListener)
     : RecyclerView.Adapter<ItemViewHolder>(), Filterable {
     private val fullList = mutableListOf<Item>()
 
@@ -32,15 +33,15 @@ class ListAdapter(private val list: MutableList<Item>, val itemClickListener: On
     }
 
     private val exampleFilter = object : Filter() {
-        override fun performFiltering(constraint: CharSequence): Filter.FilterResults? {
-            var filteredList = mutableListOf<Item>()
-            if(constraint == null || constraint.length == 0){
+        override fun performFiltering(constraint: CharSequence): FilterResults? {
+            val filteredList = mutableListOf<Item>()
+            if(constraint.isEmpty()){
                 filteredList.addAll(fullList)
             } else {
-                val finalPattern: String = constraint.toString().toLowerCase().trim()
+                val finalPattern: String = constraint.toString().toLowerCase(Locale.ROOT).trim()
 
                 for(item in fullList){
-                    if(item.title.toLowerCase().contains(finalPattern)){
+                    if (item.title.toLowerCase(Locale.ROOT).contains(finalPattern)){
                         filteredList.add(item)
                     }
                 }
@@ -52,7 +53,7 @@ class ListAdapter(private val list: MutableList<Item>, val itemClickListener: On
             return filterResults
         }
 
-        override fun publishResults(constraint: CharSequence, results: Filter.FilterResults) {
+        override fun publishResults(constraint: CharSequence, results: FilterResults) {
             list.clear()
             list.addAll(results.values as MutableList<Item>)
             notifyDataSetChanged()
