@@ -2,6 +2,8 @@ package org.polsl.trackapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -49,6 +51,16 @@ abstract class BaseActivity : AppCompatActivity(),
         if (item != null) {
             button_delete.isEnabled = true
             fillFields()
+        }
+
+        if(getLayoutId() == R.layout.activity_form){
+            // set listeners
+            title_edit_text.addTextChangedListener(mTextWatcher);
+            author_edit_text.addTextChangedListener(mTextWatcher);
+            year_edit_text.addTextChangedListener(mTextWatcher);
+
+            // run once to disable if empty
+            checkFieldsForEmptyValues();
         }
     }
 
@@ -205,5 +217,36 @@ abstract class BaseActivity : AppCompatActivity(),
             Node.game -> spinner2.setSelection(2)
         }
     }
+
+
+    private val mTextWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(
+            charSequence: CharSequence,
+            i: Int,
+            i2: Int,
+            i3: Int
+        ) {
+        }
+
+        override fun onTextChanged(
+            charSequence: CharSequence,
+            i: Int,
+            i2: Int,
+            i3: Int
+        ) {
+        }
+
+        override fun afterTextChanged(editable: Editable) { // check Fields For Empty Values
+            checkFieldsForEmptyValues()
+        }
+    }
+
+    open fun checkFieldsForEmptyValues() {
+        val s1: String = author_edit_text.text.toString()
+        val s2: String = title_edit_text.text.toString()
+        val s3: String = year_edit_text.text.toString()
+        button_save.isEnabled = !(s1 == "" || s2 == "" || s3 == "")
+    }
+
 
 }

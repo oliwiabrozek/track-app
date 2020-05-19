@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import org.polsl.trackapp.model.Item
 import java.util.*
 
-class ListAdapter(private val list: MutableList<Item>, private val itemClickListener: OnItemClickListener)
-    : RecyclerView.Adapter<ItemViewHolder>(), Filterable {
+class ListAdapter(
+    private val list: MutableList<Item>,
+    private val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<ItemViewHolder>(), Filterable {
     private val fullList = mutableListOf<Item>()
 
     init {
@@ -35,13 +37,16 @@ class ListAdapter(private val list: MutableList<Item>, private val itemClickList
     private val exampleFilter = object : Filter() {
         override fun performFiltering(constraint: CharSequence): FilterResults? {
             val filteredList = mutableListOf<Item>()
-            if(constraint.isEmpty()){
+            if (constraint.isEmpty()) {
                 filteredList.addAll(fullList)
             } else {
                 val finalPattern: String = constraint.toString().toLowerCase(Locale.ROOT).trim()
 
-                for(item in fullList){
-                    if (item.title.toLowerCase(Locale.ROOT).contains(finalPattern)){
+                for (item in fullList) {
+                    if (item.title.toLowerCase(Locale.ROOT).contains(finalPattern)
+                        || item.author.toLowerCase(Locale.ROOT).contains(finalPattern)
+                        || item.year.toString().contains(finalPattern)
+                    ) {
                         filteredList.add(item)
                     }
                 }
@@ -61,6 +66,6 @@ class ListAdapter(private val list: MutableList<Item>, private val itemClickList
     }
 }
 
-interface OnItemClickListener{
+interface OnItemClickListener {
     fun onItemClicked(item: Item)
 }
