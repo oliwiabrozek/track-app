@@ -12,6 +12,8 @@
         android:orientation="vertical">
 
         <SearchView
+            android:queryHint="@string/query_hint_text"
+            android:iconifiedByDefault="false"
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
