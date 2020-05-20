@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
     tools:context=".search.SearchFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:orientation="vertical">
-
         <SearchView
-            android:queryHint="@string/query_hint_text"
-            android:iconifiedByDefault="false"
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:queryHint="@string/query_hint_text" />
 
         <include
             layout="@layout/fragment_item_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-</FrameLayout>
+            android:layout_height="match_parent" />
+</LinearLayout>

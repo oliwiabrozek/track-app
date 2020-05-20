@@ -77,7 +77,7 @@ class SearchFragment : Fragment(), OnItemClickListener {
          * @return A new instance of fragment SearchFragment.
          */
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String) =
             SearchFragment().apply {
                 arguments = Bundle().apply {
                     putString(TAB_PARAM, param1)
